@@ -110,3 +110,65 @@ function expenseAdd(newExpense) {
   // Reseta o formulário
   formClean()
 }
+
+// Função para Atualizar os totais.
+function updateTotals() {
+  try {
+    // Recuperando todos os itens (li) da Lista (ul)
+    const items = expenseList.children
+    // Atualiza a quantidade de itens da lista
+    expenseQuantity.textContent = `${items.length} ${items.length > 1 ? "Despesas" : "Despesa"}`
+
+    // Variável para calcular o total das despesas
+    let total = 0
+
+    // Percorre cada item (li) da kusta (ul)
+    for (let item = 0; item < items.length; item++) {
+      const itemAmount = items[item].querySelector(".expense-amount")
+
+      // Remove caracteres não numéricos e substitui a vírgula pelo ponto.
+      let value = itemAmount.textContent.replace(/[^\d,]/g, "").replace(",", ".")
+
+      // Converter o valor para float
+      value = parseFloat(value)
+
+      // Verifica se é um número válido
+      if (isNaN(value)) {
+        return alert("Não foi possível calcular o total. O valor não parecer ser um número")
+      }
+      // Increamenta o valor total
+      total += Number(value)
+    }
+
+    // Cria a span para adicionar o R$ formatado.
+    const symbolBRL = document.createElement("small")
+    symbolBRL.textContent = "R$"
+
+    // Formata o valor e remove o R$ que será exibido pela small com um estilo customizado.
+    total = formatCurrencyBRL(total).toUpperCase().replace("R$", "")
+
+    // Limpa o conteúdo do elemento.
+    expenseTotal.innerHTML = ""
+
+    // Exibe o total das despesas
+    expenseTotal.append(symbolBRL, total)
+
+  } catch (error) {
+    console.log(error)
+    alert("Não foi possível atualizar os totais.")
+
+  }
+}
+
+
+
+// Função para limpar o formulário
+function formClean() {
+  // Reseta o formulário
+  expense.value = ""
+  category.value = ""
+  amount.value = ""
+
+  // Seta o focus no expense
+  expense.focus()
+}
