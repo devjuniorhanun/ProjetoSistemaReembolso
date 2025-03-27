@@ -28,13 +28,12 @@ amount.oninput = () => {
 
 // Função para formatar o valor
 function formatCurrencyBRL(value) {
-  // Formata o valor para moeda brasileira
   value = value.toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL",
   })
+
   return value
-  //return value.replace("R$", "")
 
 }
 
@@ -160,7 +159,18 @@ function updateTotals() {
   }
 }
 
-
+// Cria um evento para captura o clique nos itens da lista
+expenseList.addEventListener("click", function (event) {
+  // Verifica se o elemento clicado é o ícone de remover.
+  if (event.target.classList.contains("remove-icon")) {
+    // Obtém a li pai do elemento clicado
+    const item = event.target.closest(".expense")
+    // Remove a despesa escolhida
+    item.remove()
+  }
+  // Atuliza a lista de despesas
+  updateTotals()
+})
 
 // Função para limpar o formulário
 function formClean() {
